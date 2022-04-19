@@ -8,12 +8,15 @@ def report():
 
 def checking_resources(drink_choice):
     """Will check if the machine has enough resources to make the drink user requested."""
+    enough_ingredients = True
     for elements in MENU[drink_choice]["ingredients"]:
         if MENU[drink_choice]["ingredients"][elements] > resources[elements]:
             print(f"Sorry, there is not enough {elements}.")
-            return False
-        else:
-            return True
+            enough_ingredients = False
+    if enough_ingredients:
+        return True
+    else:
+        return False
 
 
 def checking_money(total, drink_choice):
@@ -75,9 +78,9 @@ while coffee_on:
         report()
     # TODO: The program should check if the resources are sufficient
     elif drink_choice == "espresso" or drink_choice == "latte" or drink_choice == "cappuccino":
-        checking_resources(drink_choice)
+        enough = checking_resources(drink_choice)
     # TODO: User will insert coins and the program must process and calculate the total amount.
-        if checking_resources(drink_choice):
+        if enough:
             print("Please insert coins.")
             num_quarters = float(input("How many quarters?: "))
             num_dimes = float(input("How many dimes?: "))
@@ -88,10 +91,10 @@ while coffee_on:
             checking_money(total, drink_choice)
             if checking_money(total, drink_choice):
                 money += MENU[drink_choice]["cost"]
-                print(f"Here is ${calculate_change(total, drink_choice)} in change.")
+                print(f"Here is ${round(calculate_change(total, drink_choice), 2)} in change.")
                 # TODO: Update the resources report after the coffee is made.
                 for elements in MENU[drink_choice]["ingredients"]:
                     resources[elements] -= MENU[drink_choice]["ingredients"][elements]
-                print(f"Here is your {drink_choice}. Enjoy!")
+                print(f"Here is your {drink_choice}. ☕ Enjoy and come again! 😉")
 
 
